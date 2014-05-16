@@ -1,0 +1,34 @@
+{
+  "name": "affinage",
+  "version": "0.0.0",
+  "description": "stripe customer graph",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "coffee -c server.coffee client.coffee",
+    "build-watch": "coffee -wc server.coffee client.coffee",
+    "dev": "nodemon --watch server/ server/"
+  },
+  "keywords": [
+    "stripe",
+    "analytics",
+    "graph"
+  ],
+  "author": "Jeff Ling <jeff@bench.co>",
+  "license": "TBD",
+  "dependencies": {
+    "stripe": "^2.5.2",
+    "express": "^4.2.0",
+    "moment": "^2.6.0",
+    "levelup": "^0.18.3",
+    "bluebird": "^1.2.4",
+    "kew": "^0.4.0",
+    "compression": "^1.0.2",
+    "basic-auth": "0.0.1",
+    "lodash": "^2.4.1"
+  },
+  "devDependencies": {
+    "coffee-script": "^1.7.1"
+  }
+}
