@@ -48,7 +48,6 @@ class Customers
           description: cus.description
           id: cus.id
           delta: 1
-          created: cus.created * 1000
           trial_end: (cus.subscription.trial_end * 1000) or undefined
 
         if cus.subscription?.canceled_at?
@@ -57,7 +56,6 @@ class Customers
             description: cus.description
             id: cus.id
             delta: -1
-            created: cus.created * 1000
             trial_end: (cus.subscription.trial_end * 1000) or undefined
             canceled_at: (cus.subscription.canceled_at * 1000) or undefined
       null
