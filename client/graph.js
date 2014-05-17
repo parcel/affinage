@@ -39,18 +39,17 @@
     graduatedClients = [];
     trialClients = _(_.cloneDeep(allClients)).filter(function(point) {
       return point.trial_end != null;
-    }).map(function(point) {
+    }).forEach(function(point) {
       if (!point.canceled_at) {
         point.color = blue;
       }
       if (point.trial_end < now) {
-        graduatedClients.push({
+        return graduatedClients.push({
           x: point.trial_end,
           delta: -1,
           color: green
         });
       }
-      return point;
     }).concat(graduatedClients).sortBy(function(point) {
       return point.x;
     }).forEach(function(point) {
@@ -59,6 +58,8 @@
     count = 0;
     paidClients = _(_.cloneDeep(allClients)).filter(function(point) {
       return (point.trial_end == null) || point.trial_end < now;
+    }).forEach(function(point) {
+      return point.y = (count += point.delta);
     }).value();
 
     /*
@@ -87,8 +88,7 @@
           data: trialClients
         }, {
           name: 'Paying Clients',
-          data: paidClients,
-          visible: false
+          data: paidClients
         }
       ]
     });
