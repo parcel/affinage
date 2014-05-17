@@ -49,7 +49,7 @@ superagent.get('/api/customers').end (error, res) ->
     _(_.cloneDeep allClients)
     .filter (point) ->
       point.trial_end?
-    .map (point) ->
+    .forEach (point) ->
       if not point.canceled_at
         point.color = blue
       # graduated clients
@@ -58,7 +58,6 @@ superagent.get('/api/customers').end (error, res) ->
           x: point.trial_end
           delta: -1
           color: green
-      point
     .concat graduatedClients
     .sortBy (point) ->
       point.x
@@ -72,6 +71,8 @@ superagent.get('/api/customers').end (error, res) ->
     _(_.cloneDeep allClients)
     .filter (point) ->
       not point.trial_end? or point.trial_end < now
+    .forEach (point) ->
+      point.y = (count += point.delta)
     .value()
 
   ###
@@ -98,7 +99,6 @@ superagent.get('/api/customers').end (error, res) ->
     ,
       name: 'Paying Clients'
       data: paidClients
-      visible: false
     ]
 
   # last 30 days graph
