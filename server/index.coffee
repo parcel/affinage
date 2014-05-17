@@ -8,7 +8,7 @@ module.exports = server = (port = 8082) ->
   app.use compression()
 
   router = express.Router()
-  
+
   # basic auth
   router.all '*', (req, res, next) ->
     creds = auth req
