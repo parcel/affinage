@@ -98,6 +98,7 @@ superagent.get('/api/customers').end (error, res) ->
     ,
       name: 'Paying Clients'
       data: paidClients
+      visible: false
     ]
 
   # last 30 days graph

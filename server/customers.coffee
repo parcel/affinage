@@ -1,8 +1,7 @@
 express = require 'express'
 _ = require 'lodash'
 
-config = require '../config'
-stripe = (require 'stripe')(config.stripeToken)
+stripe = (require 'stripe')(process.env.STRIPE_KEY)
 kew = require 'kew'
 
 class Customers
@@ -23,7 +22,7 @@ class Customers
 
     stripe.customers.list options, (err, res) =>
       if err
-        return kew.reject err
+        return defer.reject err
 
       customers = customers.concat res.data
 
@@ -32,8 +31,6 @@ class Customers
         defer.resolve _fetch customers
       else
         defer.resolve customers
-      # defer.resolve customers
-
 
     defer
 

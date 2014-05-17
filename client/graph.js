@@ -87,7 +87,8 @@
           data: trialClients
         }, {
           name: 'Paying Clients',
-          data: paidClients
+          data: paidClients,
+          visible: false
         }
       ]
     });

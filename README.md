@@ -3,6 +3,8 @@ A quick express app that grabs data from Stripe, then displays it.
 There are different plot lines for all customers, trial customers, and paying customers.
 
 ## Usage:
+Put your stripe api token in the STRIPE_KEY env variable.
+
 `npm install` to fetch dependencies, then `npm run start`
 
 Server runs on port `8082` by default.
