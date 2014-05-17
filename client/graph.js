@@ -107,7 +107,7 @@
       xAxis: xAxis,
       series: [
         {
-          name: 'All Clients',
+          name: 'Signups and Churns',
           data: allClients
         }, {
           name: 'Trial Clients',
@@ -125,17 +125,26 @@
       },
       plotOptions: {
         line: {
-          color: grey
+          color: grey,
+          events: {
+            click: handlePointClick
+          }
         }
       },
-      title: {
-        text: 'Customers in the last 30 days'
+      credits: {
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: pointFormat
       },
       yAxis: yAxis,
       xAxis: xAxis,
+      title: {
+        text: 'Customers in the last 30 days'
+      },
       series: [
         {
-          name: 'All Clients',
+          name: 'Sign-ups and Churns',
           data: _.filter(allClients, function(point) {
             return point.x >= monthAgo;
           })
@@ -159,17 +168,26 @@
       },
       plotOptions: {
         line: {
-          color: grey
+          color: grey,
+          events: {
+            click: handlePointClick
+          }
         }
       },
-      title: {
-        text: 'Customers in the last 7 days'
+      credits: {
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: pointFormat
       },
       yAxis: yAxis,
       xAxis: xAxis,
+      title: {
+        text: 'Customers in the last 7 days'
+      },
       series: [
         {
-          name: 'All Clients',
+          name: 'Signups and Churns',
           data: _.filter(allClients, function(point) {
             return point.x >= weekAgo;
           })

@@ -123,7 +123,7 @@ superagent.get('/api/customers').end (error, res) ->
     yAxis: yAxis
     xAxis: xAxis
     series: [
-      name: 'All Clients'
+      name: 'Signups and Churns'
       data: allClients
     ,
       name: 'Trial Clients'
@@ -141,12 +141,18 @@ superagent.get('/api/customers').end (error, res) ->
     plotOptions:
       line:
         color: grey
-    title:
-      text: 'Customers in the last 30 days'
+        events:
+          click: handlePointClick
+    credits:
+      enabled: false
+    tooltip:
+      pointFormat: pointFormat
     yAxis: yAxis
     xAxis: xAxis
+    title:
+      text: 'Customers in the last 30 days'
     series: [
-      name: 'All Clients'
+      name: 'Sign-ups and Churns'
       data: _.filter allClients, (point) ->
         point.x >= monthAgo
     ,
@@ -167,12 +173,18 @@ superagent.get('/api/customers').end (error, res) ->
     plotOptions:
       line:
         color: grey
-    title:
-      text: 'Customers in the last 7 days'
+        events:
+          click: handlePointClick
+    credits:
+      enabled: false
+    tooltip:
+      pointFormat: pointFormat
     yAxis: yAxis
     xAxis: xAxis
+    title:
+      text: 'Customers in the last 7 days'
     series: [
-      name: 'All Clients'
+      name: 'Signups and Churns'
       data: _.filter allClients, (point) ->
         point.x >= weekAgo
     ,
