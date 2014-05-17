@@ -19,7 +19,7 @@
   };
 
   superagent.get('/api/customers').end(function(error, res) {
-    var allClients, blue, count, graduatedClients, green, grey, monthAgo, orange, paidClients, red, trialClients, weekAgo;
+    var allClients, blue, count, graduatedClients, green, grey, handlePointClick, monthAgo, orange, paidClients, pointFormat, red, trialClients, weekAgo;
     if (error || res.status !== 200) {
       console.error('Status: ' + res.status, error);
       $('#container1').text('Status: ' + res.status + ' Message: ' + error);
@@ -31,7 +31,7 @@
     blue = '#68b0ef';
     allClients = _(res.body).map(function(point) {
       var colour;
-      colour = point.delta < 0 ? point.trial_end > point.canceled_at ? orange : red : point.trial_end > now ? blue : green;
+      colour = point.delta < 0 ? point.trial_end > point.canceled_at ? (point.event = 'Lost Trial', orange) : (point.event = 'Churned', red) : point.trial_end > now ? (point.event = 'Trial', blue) : (point.event = 'Client', green);
       point.color = colour;
       return point;
     }).value();
@@ -40,15 +40,21 @@
     trialClients = _(_.cloneDeep(allClients)).filter(function(point) {
       return point.trial_end != null;
     }).forEach(function(point) {
+      var graduatedPoint;
       if (!point.canceled_at) {
         point.color = blue;
+        point.event = 'New Trial';
+      } else {
+        point.event = 'Lost Trial';
       }
       if (point.trial_end < now) {
-        return graduatedClients.push({
+        graduatedPoint = _.defaults({
           x: point.trial_end,
           delta: -1,
+          event: 'Converted from Trial',
           color: green
-        });
+        }, point);
+        return graduatedClients.push(graduatedPoint);
       }
     }).concat(graduatedClients).sortBy(function(point) {
       return point.x;
@@ -59,23 +65,43 @@
     paidClients = _(_.cloneDeep(allClients)).filter(function(point) {
       return (point.trial_end == null) || point.trial_end < now;
     }).forEach(function(point) {
+      if ((point.canceled_at == null) && (point.trial_end != null)) {
+        point.x = point.trial_end;
+        return point.event = 'Converted from Trial';
+      }
+    }).sortBy('x').forEach(function(point) {
       return point.y = (count += point.delta);
     }).value();
 
     /*
      * Initialize the actual graphs
      */
+    handlePointClick = function(e) {
+      var url;
+      url = "https://manage.stripe.com/customers/" + e.point.id;
+      return window.open(url, '_blank');
+    };
+    pointFormat = '{series.name}: <b>{point.y}</b><br /> {point.description}<br /> <b>{point.event}</b>';
     $('#container1').highcharts({
       chart: {
         type: 'line'
       },
       plotOptions: {
         line: {
-          color: grey
+          color: grey,
+          events: {
+            click: handlePointClick
+          }
         }
       },
       title: {
         text: 'Customers over time'
+      },
+      credits: {
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: pointFormat
       },
       yAxis: yAxis,
       xAxis: xAxis,

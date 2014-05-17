@@ -29,13 +29,17 @@ superagent.get('/api/customers').end (error, res) ->
       colour =
         if point.delta < 0
           if point.trial_end > point.canceled_at
+            point.event = 'Lost Trial'
             orange
           else
+            point.event = 'Churned'
             red
         else
           if point.trial_end > now
+            point.event = 'Trial'
             blue
           else
+            point.event = 'Client'
             green
 
       point.color = colour
@@ -52,12 +56,18 @@ superagent.get('/api/customers').end (error, res) ->
     .forEach (point) ->
       if not point.canceled_at
         point.color = blue
+        point.event = 'New Trial'
+      else
+        point.event = 'Lost Trial'
       # graduated clients
       if point.trial_end < now
-        graduatedClients.push
+        graduatedPoint = _.defaults
           x: point.trial_end
           delta: -1
+          event: 'Converted from Trial'
           color: green
+        , point
+        graduatedClients.push graduatedPoint
     .concat graduatedClients
     .sortBy (point) ->
       point.x
@@ -72,12 +82,28 @@ superagent.get('/api/customers').end (error, res) ->
     .filter (point) ->
       not point.trial_end? or point.trial_end < now
     .forEach (point) ->
+      if not point.canceled_at? and point.trial_end?
+        point.x = point.trial_end
+        point.event = 'Converted from Trial'
+    .sortBy 'x'
+    .forEach (point) ->
       point.y = (count += point.delta)
     .value()
 
   ###
   # Initialize the actual graphs
   ###
+
+  handlePointClick = (e) ->
+    url = "https://manage.stripe.com/customers/#{e.point.id}"
+    window.open url, '_blank'
+
+  pointFormat =
+    '
+    {series.name}: <b>{point.y}</b><br />
+    {point.description}<br />
+    <b>{point.event}</b>
+    '
 
   # All time
   $('#container1').highcharts
@@ -86,8 +112,14 @@ superagent.get('/api/customers').end (error, res) ->
     plotOptions:
       line:
         color: grey
+        events:
+          click: handlePointClick
     title:
       text: 'Customers over time'
+    credits:
+      enabled: false
+    tooltip:
+      pointFormat: pointFormat
     yAxis: yAxis
     xAxis: xAxis
     series: [
