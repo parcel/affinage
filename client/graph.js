@@ -144,7 +144,7 @@
       },
       series: [
         {
-          name: 'Sign-ups and Churns',
+          name: 'Signups and Churns',
           data: _.filter(allClients, function(point) {
             return point.x >= monthAgo;
           })

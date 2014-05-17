@@ -152,7 +152,7 @@ superagent.get('/api/customers').end (error, res) ->
     title:
       text: 'Customers in the last 30 days'
     series: [
-      name: 'Sign-ups and Churns'
+      name: 'Signups and Churns'
       data: _.filter allClients, (point) ->
         point.x >= monthAgo
     ,
