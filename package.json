@@ -7,8 +7,8 @@
     "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "coffee -c server.coffee client.coffee",
-    "build-watch": "coffee -wc server.coffee client.coffee",
-    "dev": "nodemon --watch server/ server/"
+    "build-watch": "coffee -wc client/*.coffee",
+    "dev": "npm run build-watch & nodemon --watch server/ server/"
   },
   "keywords": [
     "stripe",

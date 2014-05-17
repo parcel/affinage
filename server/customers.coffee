@@ -32,6 +32,8 @@ class Customers
         defer.resolve _fetch customers
       else
         defer.resolve customers
+      # defer.resolve customers
+
 
     defer
 
@@ -47,25 +49,26 @@ class Customers
           x: cus.created * 1000
           delta: 1
           created: cus.created * 1000
-          trial: cus.subscription.trial_end * 1000 > now
+          trial_end: (cus.subscription.trial_end * 1000) or undefined
 
         if cus.subscription?.canceled_at?
           data.push
             x: cus.subscription.canceled_at * 1000
             delta: -1
             created: cus.created * 1000
-            trial: cus.subscription.trial_end * 1000 > now
+            trial_end: (cus.subscription.trial_end * 1000) or undefined
+            canceled_at: (cus.subscription.canceled_at * 1000) or undefined
 
       null
 
     count = 0
 
     # sort data points and add y axis
-    _.sortBy data, (point) ->
-      point.x
+    _(data).sortBy 'x'
     .map (point) ->
       point.y = (count += point.delta)
       point
+    .value()
 
 
   # updates the `customers` variable
