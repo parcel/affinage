@@ -135,7 +135,7 @@ superagent.get('/api/customers').end (error, res) ->
   minDatePicker = $('.js-min-date').pickadate
     max: Date.now()
     onStart: ->
-      this.set 'select', graph.xAxis[0].min
+      this.set 'select', graph.xAxis[0].min, muted: true
     onSet: (val) ->
       if val.select?
         graph.xAxis[0].update
@@ -145,7 +145,7 @@ superagent.get('/api/customers').end (error, res) ->
   maxDatePicker = $('.js-max-date').pickadate
     max: Date.now()
     onStart: ->
-      this.set 'select', graph.xAxis[0].max
+      this.set 'select', graph.xAxis[0].max, muted: true
     onSet: (val) ->
       if val.select?
         graph.xAxis[0].update

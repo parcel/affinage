@@ -127,7 +127,9 @@
     minDatePicker = $('.js-min-date').pickadate({
       max: Date.now(),
       onStart: function() {
-        return this.set('select', graph.xAxis[0].min);
+        return this.set('select', graph.xAxis[0].min, {
+          muted: true
+        });
       },
       onSet: function(val) {
         if (val.select != null) {
@@ -140,7 +142,9 @@
     maxDatePicker = $('.js-max-date').pickadate({
       max: Date.now(),
       onStart: function() {
-        return this.set('select', graph.xAxis[0].max);
+        return this.set('select', graph.xAxis[0].max, {
+          muted: true
+        });
       },
       onSet: function(val) {
         if (val.select != null) {
