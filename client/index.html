@@ -1,33 +1,30 @@
 <html>
 <head>
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/foundation/5.1.1/css/foundation.min.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/skeleton/1.2/skeleton.min.css" type="text/css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.0/compressed/themes/classic.css" type="text/css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.0/compressed/themes/classic.date.css" type="text/css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <dl class="tabs" data-tab>
-            <dd class="active"><a href="#container1">All</a></dd>
-            <dd><a href="#container2">Last 30 days</a></dd>
-            <dd><a href="#container3">Last 7 days</a></dd>
-            <!-- <dd><a href="#container4">WTF graph</a></dd> -->
-
-    </dl>
-    <div class="tabs-content">
-        <div class="content active" id="container1" style="height: 90%; width: 100%"></div>
-        <div class="content" id="container2" style="height: 90%; width: 100%"></div>
-        <div class="content" id="container3" style="height: 90%; width: 100%"></div>
-        <!-- <div class="content" id="container4" style="height: 90%; width: 100%"></div> -->
-
+  <div class="container" style="padding-top: 10px;">
+    <strong class="two column">select date range:</strong>
+    <div class="two column">
+      <input class="js-min-date" type="text"></input>
     </div>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.1.1/js/foundation.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/3.0.9/highcharts.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/superagent/0.15.7/superagent.min.js"></script>
-    <script>
-    $(function () {
-        $(document).foundation();
-    });
-    </script>
-    <script src="graph.js"></script>
+    <div class="two column">
+      <input class="js-max-date" type="text"></input>
+    </div>
+    <button class="js-time-all two column">All time</button>
+    <button class="js-time-30 two column">Last 30 days</button>
+    <button class="js-time-7 two column">Last 7 days</button>
+  </div>
+  <div class="js-customer-graph" style="height: 90%"></div>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/3.0.9/highcharts.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/superagent/0.15.7/superagent.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.0/compressed/picker.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.0/compressed/picker.date.js"></script>
+  <script src="graph.js"></script>
 </body>
 </html>

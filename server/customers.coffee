@@ -1,8 +1,12 @@
 express = require 'express'
 _ = require 'lodash'
-
-stripe = (require 'stripe')(process.env.STRIPE_KEY)
+nconf = require 'nconf'
 kew = require 'kew'
+
+nconf.env().file
+  file: 'config.json'
+stripe = (require 'stripe') (nconf.get 'STRIPE_KEY')
+
 
 class Customers
   # local store of customers TODO: put in a db

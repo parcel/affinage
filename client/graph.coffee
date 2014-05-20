@@ -1,28 +1,19 @@
-now = new Date().getTime()
-
-# initial settings
-xAxis = type: 'datetime'
-yAxis =
-  minPadding: 0
-  maxPadding: 0
-  allowDecimals: false
-  alternateGridColor: '#F4F4F4'
-  title:
-    text: 'Total customers'
-
+grey = '#9E9E9E'
+red = '#D86353'
+green = '#89bf0a'
+orange = '#daa055'
+blue = '#68b0ef'
 
 superagent.get('/api/customers').end (error, res) ->
   if error or res.status isnt 200
     console.error 'Status: ' + res.status, error
     $('#container1').text 'Status: ' + res.status + ' Message: ' + error
 
-  grey = '#9E9E9E'
-  red = '#D86353'
-  green = '#89bf0a'
-  orange = '#daa055'
-  blue = '#68b0ef'
+  ###
+  # generate the 3 datasets
+  ###
 
-  # dataset for all customers (trial or not)
+  # all customers (trial or not)
   allClients =
     _(res.body)
     .map (point) ->
@@ -35,7 +26,7 @@ superagent.get('/api/customers').end (error, res) ->
             point.event = 'Churned'
             red
         else
-          if point.trial_end > now
+          if point.trial_end > Date.now()
             point.event = 'Trial'
             blue
           else
@@ -52,15 +43,13 @@ superagent.get('/api/customers').end (error, res) ->
   trialClients =
     _(_.cloneDeep allClients)
     .filter (point) ->
-      point.trial_end?
+      point.trial_end? and point.event isnt 'Churned'
     .forEach (point) ->
       if not point.canceled_at
         point.color = blue
         point.event = 'New Trial'
-      else
-        point.event = 'Lost Trial'
-      # graduated clients
-      if point.trial_end < now
+      # graduated trial clients
+      if point.trial_end < Date.now()
         graduatedPoint = _.defaults
           x: point.trial_end
           delta: -1
@@ -80,7 +69,7 @@ superagent.get('/api/customers').end (error, res) ->
   paidClients =
     _(_.cloneDeep allClients)
     .filter (point) ->
-      not point.trial_end? or point.trial_end < now
+      not point.trial_end? or point.trial_end < Date.now()
     .forEach (point) ->
       if not point.canceled_at? and point.trial_end?
         point.x = point.trial_end
@@ -91,9 +80,8 @@ superagent.get('/api/customers').end (error, res) ->
     .value()
 
   ###
-  # Initialize the actual graphs
+  # Initialize the actual graph
   ###
-
   handlePointClick = (e) ->
     url = "https://manage.stripe.com/customers/#{e.point.id}"
     window.open url, '_blank'
@@ -105,8 +93,7 @@ superagent.get('/api/customers').end (error, res) ->
     <b>{point.event}</b>
     '
 
-  # All time
-  $('#container1').highcharts
+  $('.js-customer-graph').highcharts
     chart:
       type: 'line'
     plotOptions:
@@ -120,8 +107,15 @@ superagent.get('/api/customers').end (error, res) ->
       enabled: false
     tooltip:
       pointFormat: pointFormat
-    yAxis: yAxis
-    xAxis: xAxis
+    yAxis:
+      minPadding: 0
+      maxPadding: 0
+      allowDecimals: false
+      alternateGridColor: '#F4F4F4'
+      title:
+        text: 'Clients'
+    xAxis:
+      type: 'datetime'
     series: [
       name: 'Signups and Churns'
       data: allClients
@@ -133,66 +127,47 @@ superagent.get('/api/customers').end (error, res) ->
       data: paidClients
     ]
 
-  # last 30 days graph
-  monthAgo = Date.now() - 2592000000
-  $('#container2').highcharts
-    chart:
-      type: 'line'
-    plotOptions:
-      line:
-        color: grey
-        events:
-          click: handlePointClick
-    credits:
-      enabled: false
-    tooltip:
-      pointFormat: pointFormat
-    yAxis: yAxis
-    xAxis: xAxis
-    title:
-      text: 'Customers in the last 30 days'
-    series: [
-      name: 'Signups and Churns'
-      data: _.filter allClients, (point) ->
-        point.x >= monthAgo
-    ,
-      name: 'Trial Clients'
-      data: _.filter trialClients, (point) ->
-        point.x >= monthAgo
-    ,
-      name: 'Paying Clients'
-      data: _.filter paidClients, (point) ->
-        point.x >= monthAgo
-    ]
+  ###
+  # date picker events
+  ###
+  graph = $('.js-customer-graph').highcharts()
 
-  # last 6 days
-  weekAgo = Date.now() - 604800000
-  $('#container3').highcharts
-    chart:
-      type: 'line'
-    plotOptions:
-      line:
-        color: grey
-        events:
-          click: handlePointClick
-    credits:
-      enabled: false
-    tooltip:
-      pointFormat: pointFormat
-    yAxis: yAxis
-    xAxis: xAxis
-    title:
-      text: 'Customers in the last 7 days'
-    series: [
-      name: 'Signups and Churns'
-      data: _.filter allClients, (point) ->
-        point.x >= weekAgo
-    ,
-      name: 'Trial Clients'
-      data: _.filter trialClients, (point) ->
-        point.x >= weekAgo
-    ,
-      name: 'Paying Clients'
-      data: _.filter paidClients, (point) ->
-        point.x >= weekAgo
-    ]
+  minDatePicker = $('.js-min-date').pickadate
+    max: Date.now()
+    onStart: ->
+      this.set 'select', graph.xAxis[0].min
+    onSet: (val) ->
+      if val.select?
+        graph.xAxis[0].update
+          min: val.select
+  .pickadate 'picker'
+
+  maxDatePicker = $('.js-max-date').pickadate
+    max: Date.now()
+    onStart: ->
+      this.set 'select', graph.xAxis[0].max
+    onSet: (val) ->
+      if val.select?
+        graph.xAxis[0].update
+          max: val.select
+  .pickadate 'picker'
+
+  ###
+  # Buttons events
+  ###
+  minDate = graph.xAxis[0].min
+  maxDate = graph.xAxis[0].max
+
+  $('.js-time-all').click (e) ->
+    minDatePicker.set 'select', minDate
+    maxDatePicker.set 'select', maxDate
+
+  $('.js-time-30').click (e) ->
+    now = Date.now()
+    minDatePicker.set 'select', now - 2592000000
+    maxDatePicker.set 'select', now
+
+  $('.js-time-7').click (e) ->
+    now = Date.now()
+    minDatePicker.set 'select', now - 604800000
+    maxDatePicker.set 'select', now
