@@ -1,6 +1,6 @@
 {
   "name": "affinage",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "stripe customer graph",
   "main": "server/index.js",
   "scripts": {
