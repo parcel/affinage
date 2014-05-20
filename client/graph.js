@@ -2,6 +2,12 @@
 (function() {
   var blue, green, grey, orange, red;
 
+  Highcharts.setOptions({
+    global: {
+      timezoneOffset: new Date().getTimezoneOffset()
+    }
+  });
+
   grey = '#9E9E9E';
 
   red = '#D86353';
@@ -92,7 +98,8 @@
         enabled: false
       },
       tooltip: {
-        pointFormat: pointFormat
+        pointFormat: pointFormat,
+        xDateFormat: '%l:%M%P, %b %d, %Y'
       },
       yAxis: {
         minPadding: 0,

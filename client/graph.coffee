@@ -1,3 +1,7 @@
+Highcharts.setOptions
+  global:
+    timezoneOffset: new Date().getTimezoneOffset()
+
 grey = '#9E9E9E'
 red = '#D86353'
 green = '#89bf0a'
@@ -107,6 +111,7 @@ superagent.get('/api/customers').end (error, res) ->
       enabled: false
     tooltip:
       pointFormat: pointFormat
+      xDateFormat: '%l:%M%P, %b %d, %Y'
     yAxis:
       minPadding: 0
       maxPadding: 0
