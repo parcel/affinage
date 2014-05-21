@@ -81,7 +81,8 @@
     pointFormat = '{series.name}: <b>{point.y}</b><br /> {point.description}<br /> <b>{point.event}</b>';
     $('.js-customer-graph').highcharts({
       chart: {
-        type: 'line'
+        type: 'line',
+        zoomType: 'x'
       },
       plotOptions: {
         line: {

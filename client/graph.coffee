@@ -100,6 +100,7 @@ superagent.get('/api/customers').end (error, res) ->
   $('.js-customer-graph').highcharts
     chart:
       type: 'line'
+      zoomType: 'x'
     plotOptions:
       line:
         color: grey
