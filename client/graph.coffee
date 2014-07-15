@@ -106,6 +106,7 @@ superagent.get('/api/customers').end (error, res) ->
         color: grey
         events:
           click: handlePointClick
+      turboThreshold: 0
     title:
       text: 'Customers over time'
     credits:
@@ -132,7 +133,6 @@ superagent.get('/api/customers').end (error, res) ->
       name: 'Paying Clients'
       data: paidClients
     ]
-    turboThreshold: 10000
 
   ###
   # date picker events
