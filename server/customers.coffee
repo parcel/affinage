@@ -7,7 +7,6 @@ nconf.env().file
   file: 'config.json'
 stripe = (require 'stripe') (nconf.get 'STRIPE_KEY')
 
-
 class Customers
   # local store of customers TODO: put in a db
   customers: []

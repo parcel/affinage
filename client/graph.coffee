@@ -132,6 +132,7 @@ superagent.get('/api/customers').end (error, res) ->
       name: 'Paying Clients'
       data: paidClients
     ]
+    turboThreshold: 10000
 
   ###
   # date picker events
