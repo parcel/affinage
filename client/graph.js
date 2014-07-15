@@ -89,7 +89,8 @@
           color: grey,
           events: {
             click: handlePointClick
-          }
+          },
+          turboThreshold: 0
         }
       },
       title: {
