@@ -13,3 +13,8 @@ Server runs on port `8082` by default.
 `npm install -g nodemon` to get `nodemon`, which will restart the server every time you make a change.
 
 `npm run dev` to start the server using nodemon and also a process that watches the client directory for `.coffee` changes and compiles them.
+
+## TODO:
+
+- Extract auth credentials to config file
+- Extract STRIPE_KEY to config file (with possibility to still use ENV variable)
