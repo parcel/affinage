@@ -1,7 +1,10 @@
 express = require 'express'
 compression = require 'compression'
 auth = require 'basic-auth'
+nconf = require 'nconf'
 
+nconf.argv().env().file
+    file: 'config.json'
 app = express()
 
 module.exports = server = (port = 8082) ->
@@ -9,10 +12,13 @@ module.exports = server = (port = 8082) ->
 
   router = express.Router()
 
+  username = nconf.get 'username'
+  password = nconf.get 'password'
+
   # basic auth
   router.all '*', (req, res, next) ->
     creds = auth req
-    if creds?.name is '10sheet' and creds?.pass is 'benchco'
+    if creds?.name is username and creds?.pass is password
       next()
     else
       res.set 'WWW-Authenticate', 'Basic'

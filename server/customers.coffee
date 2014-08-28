@@ -3,7 +3,7 @@ _ = require 'lodash'
 nconf = require 'nconf'
 kew = require 'kew'
 
-nconf.env().file
+nconf.argv().env().file
   file: 'config.json'
 stripe = (require 'stripe') (nconf.get 'STRIPE_KEY')
 

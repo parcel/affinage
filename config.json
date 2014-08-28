@@ -1,0 +1,5 @@
+{
+    "username": "admin",
+    "password": "password",
+    "STRIPE_KEY": "YOUR_STRIPE_KEY"
+}
