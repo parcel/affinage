@@ -1,7 +1,7 @@
 {
   "name": "affinage",
   "version": "0.1.0",
-  "description": "stripe customer graph",
+  "description": "Stripe data in a nice way",
   "main": "server/index.js",
   "scripts": {
     "start": "node server/index.js",
@@ -16,7 +16,7 @@
     "graph"
   ],
   "author": "Jeff Ling <jeff@bench.co>",
-  "license": "TBD",
+  "license": "MIT",
   "dependencies": {
     "stripe": "^2.5.2",
     "express": "^4.2.0",
