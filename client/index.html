@@ -1,12 +1,16 @@
+<!DOCTYPE html>
 <html>
 <head>
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/skeleton/1.2/skeleton.min.css" type="text/css">
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.0/compressed/themes/classic.css" type="text/css">
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.0/compressed/themes/classic.date.css" type="text/css">
+  <link rel="stylesheet" href="style.css" type="text/css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <title>Affinage</title>
 </head>
 <body>
-  <div class="container" style="padding-top: 10px;">
+  <div class="container">
     <strong class="two column">Select date range:</strong>
     <div class="two column">
       <input class="js-min-date" type="text" />
@@ -18,7 +22,7 @@
     <button class="js-time-30 two column">Last 30 days</button>
     <button class="js-time-7 two column">Last 7 days</button>
   </div>
-  <div class="js-customer-graph" style="height: 90%"></div>
+  <div class="js-customer-graph"></div>
   <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/3.0.9/highcharts.js"></script>

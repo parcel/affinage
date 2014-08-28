@@ -1,0 +1,15 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
+}
+
+.container {
+    padding-top: 10px;
+}
+
+.js-customer-graph {
+    height: 90%;
+}
