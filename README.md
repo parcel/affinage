@@ -1,3 +1,5 @@
+![](https://www.evernote.com/shard/s24/sh/d6948511-25f2-4fd0-a3c3-e6ef5b04644c/42cbcf4e7dc6798e1d6a2b9d6107ed8a/deep/0/Screen-Shot-2014-08-28-at-11.27.26-AM.png)
+
 A quick express app that grabs data from Stripe, then displays it.
 
 There are different plot lines for all customers, trial customers, and paying customers.
