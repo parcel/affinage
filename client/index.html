@@ -1,36 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/skeleton/1.2/skeleton.min.css" type="text/css">
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.0/compressed/themes/classic.css" type="text/css">
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.0/compressed/themes/classic.date.css" type="text/css">
+  <link rel="stylesheet" href="normalize.css" type="text/css">
+  <link rel="stylesheet" href="skeleton.css" type="text/css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/jquery.pickadate.js/4.0.0-0/css/styles.css" title="" type="text/css" />
   <link rel="stylesheet" href="style.css" type="text/css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="utf-8">
   <title>Affinage</title>
 </head>
 <body>
-  <div class="container">
-    <strong class="two column">Select date range:</strong>
-    <div class="two column">
-      <input class="js-min-date" type="text" />
-    </div>
-    <div class="two column">
-      <input class="js-max-date" type="text" />
-    </div>
-    <button class="js-time-all two column">All time</button>
-    <button class="js-time-30 two column">Last 30 days</button>
-    <button class="js-time-7 two column">Last 7 days</button>
-  </div>
-  <div class="js-customer-graph">
-      <div class="loading-message">Loading...</div>
-  </div>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/3.0.9/highcharts.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/superagent/0.15.7/superagent.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.0/compressed/picker.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.0/compressed/picker.date.js"></script>
+  <!--<div class="containerV">-->
+    <!--<strong class="two column">Select date range:</strong>-->
+    <!--<div class="two column">-->
+      <!--<input class="js-min-date" type="text" />-->
+    <!--</div>-->
+    <!--<div class="two column">-->
+      <!--<input class="js-max-date" type="text" />-->
+    <!--</div>-->
+    <!--<button class="js-time-all two column">All time</button>-->
+    <!--<button class="js-time-30 two column">Last 30 days</button>-->
+    <!--<button class="js-time-7 two column">Last 7 days</button>-->
+  <!--</div>-->
+  <!--<div class="js-customer-graph">-->
+      <!--<div class="loading-message">Loading...</div>-->
+  <!--</div>-->
+  <script src="//cdn.jsdelivr.net/mithril/0.1.27/mithril.min.js"></script>
+  <script src="//cdn.jsdelivr.net/lodash/2.4.1/lodash.min.js"></script>
+  <script src="//cdn.jsdelivr.net/jquery/2.1.3/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/highcharts/4.0.4/highcharts.js"></script>
+  <script src="//cdn.jsdelivr.net/superagent/0.18.0/superagent.min.js"></script>
   <script src="graph.js"></script>
 </body>
 </html>

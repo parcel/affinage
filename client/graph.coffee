@@ -2,23 +2,18 @@ Highcharts.setOptions
   global:
     timezoneOffset: new Date().getTimezoneOffset()
 
-grey = '#9E9E9E'
-red = '#D86353'
-green = '#89bf0a'
-orange = '#daa055'
-blue = '#68b0ef'
+dashboard =
+  vm:
+    init: ->
+      dashboard.vm.graphData = m.prop {}
+      dashboard.loadGraphData dashboard.vm.graphData
 
-load = (callback) ->
-  superagent.get('/api/customers').end (error, res) ->
-    if error or res.status isnt 200
-      console.error 'Status: ' + res.status, error
-      $('#container1').text 'Status: ' + res.status + ' Message: ' + error
-
-    if res.body.length is 0
-      callback? true
-      return
-    else
-      callback? false
+  renderGraph: (ele, thing, context) ->
+    grey = '#9E9E9E'
+    red = '#D86353'
+    green = '#89bf0a'
+    orange = '#daa055'
+    blue = '#68b0ef'
 
     ###
     # generate the 3 datasets
@@ -26,7 +21,7 @@ load = (callback) ->
 
     # all customers (trial or not)
     allClients =
-      _(res.body)
+      _(dashboard.vm.graphData())
       .map (point) ->
         colour =
           if point.delta < 0
@@ -104,8 +99,9 @@ load = (callback) ->
       <b>{point.event}</b>
       '
 
-    $('.js-customer-graph').highcharts
+    chart = new Highcharts.Chart
       chart:
+        renderTo: ele
         type: 'line'
         zoomType: 'x'
       plotOptions:
@@ -140,6 +136,51 @@ load = (callback) ->
         name: 'Paying Clients'
         data: paidClients
       ]
+
+  loadGraphData: (data) ->
+    m.request
+      method: 'GET'
+      url: '/api/customers'
+    .then (res) ->
+      console.log res
+      data res
+
+  controller: ->
+    dashboard.vm.init()
+
+  view: ->
+    m 'div.container', [
+      m 'div.row', [
+        m 'div.one-half.column', [
+          m 'fieldset', [
+            m 'input[type="date"]'
+            m 'input[type="date"]'
+          ]
+        ]
+        m 'div.one-half.column', [
+          m 'button', 'All time'
+          m 'button', 'Last 30 days'
+          m 'button', 'Last 7 days'
+        ]
+      ]
+      m 'div.row', [
+        m 'div', config: dashboard.renderGraph
+      ]
+    ]
+
+m.module document.body, dashboard
+
+load = (callback) ->
+  superagent.get('/api/customers').end (error, res) ->
+    if error or res.status isnt 200
+      console.error 'Status: ' + res.status, error
+      $('#container1').text 'Status: ' + res.status + ' Message: ' + error
+
+    if res.body.length is 0
+      callback? true
+      return
+    else
+      callback? false
 
     ###
     # date picker events
@@ -186,10 +227,10 @@ load = (callback) ->
       minDatePicker.set 'select', now - 604800000
       maxDatePicker.set 'select', now
 
-interval = setInterval ->
-  load (retry) ->
-    unless retry then clearInterval interval
-, 5000
+#interval = setInterval ->
+  #load (retry) ->
+    #unless retry then clearInterval interval
+#, 5000
 
-load (retry) ->
-  unless retry then clearInterval interval
+#load (retry) ->
+  #unless retry then clearInterval interval

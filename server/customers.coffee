@@ -79,11 +79,9 @@ class Customers
     _fetch(@customers).fail (err) ->
       console.error 'Error fetching stripe customers', err
     .then (res) =>
-      oldCount = @customers.length
+      console.log "#{res.length - @customers.length} customers fetched from Stripe."
       @customers = res
       @graphData = _buildGraphData @customers
-
-      console.log "#{@customers.length - oldCount} customers fetched from Stripe."
 
       db.put 'stripe_customers', JSON.stringify @customers
       res
