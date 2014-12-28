@@ -1,14 +1,19 @@
-Highcharts.setOptions
-  global:
-    timezoneOffset: new Date().getTimezoneOffset()
 
-dashboard =
-  vm:
-    init: ->
-      dashboard.vm.graphData = m.prop {}
-      dashboard.loadGraphData dashboard.vm.graphData
+class Graph
+  constructor: ->
+    @vm =
+      graphData: m.prop {}
 
-  renderGraph: (ele, thing, context) ->
+    @loadGraphData @vm.graphData
+
+    Highcharts.setOptions
+      global:
+        timezoneOffset: new Date().getTimezoneOffset()
+
+  view: ->
+    m 'div.graph', config: @renderGraph
+
+  renderGraph: (ele, thing, context) =>
     grey = '#9E9E9E'
     red = '#D86353'
     green = '#89bf0a'
@@ -21,7 +26,7 @@ dashboard =
 
     # all customers (trial or not)
     allClients =
-      _(dashboard.vm.graphData())
+      _(@vm.graphData())
       .map (point) ->
         colour =
           if point.delta < 0
@@ -142,33 +147,10 @@ dashboard =
       method: 'GET'
       url: '/api/customers'
     .then (res) ->
-      console.log res
       data res
 
-  controller: ->
-    dashboard.vm.init()
+window.Graph = Graph
 
-  view: ->
-    m 'div.container', [
-      m 'div.row', [
-        m 'div.one-half.column', [
-          m 'fieldset', [
-            m 'input[type="date"]'
-            m 'input[type="date"]'
-          ]
-        ]
-        m 'div.one-half.column', [
-          m 'button', 'All time'
-          m 'button', 'Last 30 days'
-          m 'button', 'Last 7 days'
-        ]
-      ]
-      m 'div.row', [
-        m 'div', config: dashboard.renderGraph
-      ]
-    ]
-
-m.module document.body, dashboard
 
 load = (callback) ->
   superagent.get('/api/customers').end (error, res) ->

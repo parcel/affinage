@@ -3,3 +3,5 @@ bower_components/
 *.log
 db
 config.json
+client/dashboard.js
+client/graph.js

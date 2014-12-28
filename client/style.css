@@ -2,10 +2,14 @@ html, body {
     height: 100%;
 }
 
-.js-customer-graph {
-    height: 90%;
+.graph {
+  position: absolute;
+  left: 0px;
+  right: 0px;
 }
-
+.highcharts-container {
+  width: 100%;
+}
 .loading-message {
     position: absolute;
     top: 50%;
