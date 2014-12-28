@@ -2,19 +2,23 @@ express = require 'express'
 _ = require 'lodash'
 nconf = require 'nconf'
 kew = require 'kew'
+levelup = require 'level'
+
+db = levelup './db'
 
 nconf.argv().env().file
   file: 'config.json'
 stripe = (require 'stripe') (nconf.get 'STRIPE_KEY')
 
 class Customers
-  # local store of customers TODO: put in a db
   customers: []
   graphData: []
 
+  constructor: (@customers) ->
+
   # fetches all customers from stripe
   # promise with the result
-  _fetch = (customers = []) ->
+  _fetch = (customers = @customers) ->
     defer = kew.defer()
 
     options =
@@ -36,7 +40,6 @@ class Customers
         defer.resolve customers
 
     defer
-
 
   # formats customer data into graph data
   _buildGraphData = (customers) ->
@@ -71,25 +74,38 @@ class Customers
       point
     .value()
 
-
   # updates the `customers` variable
   update: ->
-    _fetch().fail (err) ->
+    _fetch(@customers).fail (err) ->
       console.error 'Error fetching stripe customers', err
     .then (res) =>
+      oldCount = @customers.length
       @customers = res
       @graphData = _buildGraphData @customers
-      console.log "#{@customers.length} customers fetched from Stripe."
+
+      console.log "#{@customers.length - oldCount} customers fetched from Stripe."
+
+      db.put 'stripe_customers', JSON.stringify @customers
+      res
     .fail (err) ->
       console.error 'Error processing customer data', err
 
+customers = {}
+db.get 'stripe_customers', (err, res) =>
+  data =
+    if res
+      JSON.parse res
+    else
+      []
 
-# initial run and continue grabbing updates once in a while
-customers = new Customers()
-customers.update()
-setInterval ->
+  console.log "fetched #{data.length} customers from db"
+
+  # initial run and continue grabbing updates once in a while
+  customers = new Customers data
   customers.update()
-, 300 * 1000
+  setInterval ->
+    customers.update()
+  , 300 * 1000
 
 # routes
 router = express.Router()

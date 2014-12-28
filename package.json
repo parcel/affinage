@@ -18,13 +18,14 @@
   "author": "Jeff Ling <jeff@bench.co>",
   "license": "MIT",
   "dependencies": {
-    "stripe": "^2.5.2",
-    "express": "^4.2.0",
-    "kew": "^0.4.0",
-    "compression": "^1.0.2",
-    "basic-auth": "0.0.1",
+    "basic-auth": "1.0.0",
+    "coffee-script": "^1.8.0",
+    "compression": "^1.2.2",
+    "express": "^4.10.6",
+    "kew": "^0.5.0-alpha",
+    "level": "^0.18.0",
     "lodash": "^2.4.1",
-    "coffee-script": "^1.7.1",
-    "nconf": "^0.6.9"
+    "nconf": "^0.7.1",
+    "stripe": "^3.0.2"
   }
 }
