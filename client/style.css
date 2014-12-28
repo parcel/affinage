@@ -3,13 +3,9 @@ html, body {
 }
 
 .graph {
-  position: absolute;
-  left: 0px;
-  right: 0px;
+  height: 90%;
 }
-.highcharts-container {
-  width: 100%;
-}
+
 .loading-message {
     position: absolute;
     top: 50%;

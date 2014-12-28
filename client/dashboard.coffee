@@ -20,7 +20,7 @@ class Dashboard
           m 'button', 'Last 7 days'
         ]
       ]
-      m 'div.row', [
+      m 'div.graph', [
         @vm.graph.view()
       ]
     ]
